@@ -1,5 +1,4 @@
 <?php include('header.php') ?>
-
 <!--   modal start -->
   <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -35,7 +34,7 @@
      ?>
 
     <div class="search">
-      <form action="<?php echo site_url('welcome/searchUser');?>" method = "post">
+      <form>
         <input name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search" />
         <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
       </form>
