@@ -1,3 +1,14 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+$id = ($this->session->userdata['logged_in']['id']);
+$email = ($this->session->userdata['logged_in']['email']);
+} else {
+ redirect(site_url("welcome/login"));
+}
+?>
+
+<?php echo $email."--".$id; ?>
+
 <?php include('header.php') ?>
 <!--   modal start -->
   <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -34,8 +45,8 @@
      ?>
 
     <div class="search">
-      <form>
-        <input name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search" />
+      <form action="<?php echo site_url('welcome/searchUser');?>" method = "post">
+        <input value="<?php echo $keyword; ?>" name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search" />
         <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
       </form>
     </div>
@@ -65,7 +76,7 @@
 
         </tbody>
       </table>
-       <?php echo anchor('welcome/create', 'sign up', 'class="btn btn-primary"'); ?>
+       
 
     </div>
 

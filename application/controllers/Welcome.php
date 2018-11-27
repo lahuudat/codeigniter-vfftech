@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// session_start();
+
 class Welcome extends CI_Controller {
 
 	/**
@@ -66,13 +68,15 @@ class Welcome extends CI_Controller {
 
 				$this->session->set_flashdata('msg','Sign up successfully');
 
+				return redirect('welcome/login');
+
 			}else{
 
 				$this->session->set_flashdata('msg','Fail to sign up');
 
 			}
 
-			return redirect('welcome');
+			return redirect('welcome/create');
 
 		}
 		else
@@ -179,8 +183,101 @@ class Welcome extends CI_Controller {
 		// print_r($user);
 		// die();
 		// $this->load->view('welcome_message');
-		$this->load->view('search',['users'=>$users]);
+		$this->load->view('search',['users'=>$users, 'keyword'=>$keyword]);
 
+	}
+
+	public function login()
+	{
+
+		$this->load->view('signIn');
+
+	}
+
+	public function doLogin()
+	{
+
+		$this->load->model('userModel');
+
+		$this->form_validation->set_rules('email', 'Email', 'trim|required');
+
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|md5');
+
+		if ($this->form_validation->run() == FALSE) {
+
+			if(isset($this->session->userdata['logged_in'])){
+				$this->load->view('index_view2');
+
+			}else{
+
+				$this->load->view('signIn');
+
+				// echo "ve lai view";
+
+			}
+			// echo "sai roi";
+
+		} else {
+
+			$data = array(
+
+				'email' => $this->input->post('email'),
+				'password' => $this->input->post('password')
+
+			);
+
+			$result = $this->userModel->login($data);
+
+			// var_dump($result);
+
+			// exit();
+
+			if ($result != FALSE) {
+
+				echo "ok nhe";
+
+				var_dump($result);
+
+				foreach ($result as $key) {
+					// echo $key->email;
+
+						$session_data = array(
+
+						'id' => $key->id,
+						'email' => $key->email,
+					);
+
+				}
+
+				var_dump($session_data);
+
+				$this->session->set_userdata('logged_in', $session_data);
+
+				return redirect('welcome');
+
+			} else {
+
+					// echo "loi nha";
+				$this->session->set_flashdata('msg','Fail to sign in');
+
+				return redirect('welcome/login');
+
+			}
+
+		}
+
+	}
+
+	public function logout() {
+
+// Removing session data
+		$sess_array = array(
+			'username' => ''
+		);
+		$this->session->unset_userdata('logged_in', $sess_array);
+		$this->load->view('signIn');
+		// $data['message_display'] = 'Successfully Logout';
+		// $this->load->view('login_form', $data);
 	}
 
 }

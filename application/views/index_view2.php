@@ -1,3 +1,12 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+$id = ($this->session->userdata['logged_in']['id']);
+$email = ($this->session->userdata['logged_in']['email']);
+} else {
+ redirect(site_url("welcome/login"));
+}
+?>
+
 <?php include('header.php') ?>
 
 <!--   modal start -->
@@ -66,7 +75,7 @@
 
         </tbody>
       </table>
-       <?php echo anchor('welcome/create', 'sign up', 'class="btn btn-primary"'); ?>
+       <?php// echo anchor('welcome/create', 'sign up', 'class="btn btn-primary"'); ?>
 
     </div>
 

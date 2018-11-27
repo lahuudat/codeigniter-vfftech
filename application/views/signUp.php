@@ -1,5 +1,16 @@
 <?php include('header.php') ?>
 <div class="container">
+
+ <?php if($msg = $this->session->flashdata('msg')):
+      ?>
+      <div class="alert alert-success">
+        <?php echo $msg; ?>
+      </div>
+    <?php
+    endif;
+     ?>
+
+  
   <h1>sign up</h1>
  <?php echo form_open('welcome/doSignUp'); ?>
     <div class="form-group">
@@ -23,6 +34,7 @@
       <?php echo form_error('passconf'); ?>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
+    <p>Do have an account? <a href="<?php echo site_url("welcome/login"); ?>">sign in</a> </p>
   <?php echo form_close(); ?>
 </div>
 <?php include('footer.php') ?>

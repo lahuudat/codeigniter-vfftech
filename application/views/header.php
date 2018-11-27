@@ -28,6 +28,11 @@
     .bg-dark {
       background-color: #343a40!important;
     }
+    .welcomew{
+      float: right;
+      color: #fff;
+      margin-right: 20px;
+    }
     </style>
 
 </head>
@@ -37,5 +42,12 @@
     <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button> -->
+<div class="welcomew">
 
+    <?php if(isset($email) && isset($id) ) echo "<div class='welcome'>".$email."--".$id."</div>"; ?>
+
+    <?php if(isset($email) && isset($id) ){ ?>
+    <a style="float: right;" href="<?php echo site_url("welcome/logout"); ?>">logout</a>
+    <?php } ?>
+  </div>
   </nav>
