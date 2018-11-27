@@ -228,15 +228,7 @@ class Welcome extends CI_Controller {
 
 			$result = $this->userModel->login($data);
 
-			// var_dump($result);
-
-			// exit();
-
 			if ($result != FALSE) {
-
-				echo "ok nhe";
-
-				var_dump($result);
 
 				foreach ($result as $key) {
 					// echo $key->email;
@@ -249,7 +241,6 @@ class Welcome extends CI_Controller {
 
 				}
 
-				var_dump($session_data);
 
 				$this->session->set_userdata('logged_in', $session_data);
 
@@ -257,7 +248,7 @@ class Welcome extends CI_Controller {
 
 			} else {
 
-					// echo "loi nha";
+					
 				$this->session->set_flashdata('msg','Fail to sign in');
 
 				return redirect('welcome/login');
@@ -275,6 +266,7 @@ class Welcome extends CI_Controller {
 			'username' => ''
 		);
 		$this->session->unset_userdata('logged_in', $sess_array);
+		
 		$this->load->view('signIn');
 		// $data['message_display'] = 'Successfully Logout';
 		// $this->load->view('login_form', $data);
