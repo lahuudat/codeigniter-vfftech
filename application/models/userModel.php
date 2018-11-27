@@ -7,7 +7,7 @@ class userModel extends CI_Model
 	
 	public function getUser()
 	{	
-		// mysql_set_charset('utf8', $con);
+		
 		$query = $this->db->get('user');
 
 		if($query->num_rows()>0){
@@ -53,8 +53,8 @@ class userModel extends CI_Model
 
 	function search($keyword)
 	{
-		// return $this->db->like('name',$keyword)->get('user');
-		 $this->db->like('email',$keyword);
+
+		$this->db->like('email',$keyword);
 
 		$query = $this->db->get('user');
 
@@ -76,28 +76,16 @@ class userModel extends CI_Model
 
 		$this->db->where($condition);
 
-		// $this->db->limit(1);
-
 		$query = $this->db->get();
-
-		// echo $this->db->last_query();
-
-		// exit();
 
 		if ($query->num_rows() > 0) {
 
-			// return true;
 			return $query->result();
-
-			// echo "co";
 
 		} else {
 
 			return false;
-
-
-
-
+			
 		}
 
 

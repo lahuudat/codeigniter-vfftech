@@ -58,10 +58,7 @@ class Welcome extends CI_Controller {
 			$data = $this->input->post();
 
 			unset($data['passconf']);
-			// echo "<pre>";
-			// print_r($data);
-			// echo "</pre>";
-			// exit();
+			
 			$this->load->model('userModel');
 
 			if($this->userModel->doSignUp($data)){
@@ -137,7 +134,6 @@ class Welcome extends CI_Controller {
 		else
 		{
 
-			// $this->load->view('edit');
 			$this->load->model('userModel');
 
 			$user=$this->userModel->editUser($id);
@@ -174,15 +170,8 @@ class Welcome extends CI_Controller {
 
 		$this->load->model('userModel');
 
-        
-
-        // var_dump($data['results']);
-        // $this->load->view('search',$data);
-
         $users = $this->userModel->search($keyword);
-		// print_r($user);
-		// die();
-		// $this->load->view('welcome_message');
+		
 		$this->load->view('search',['users'=>$users, 'keyword'=>$keyword]);
 
 	}
@@ -212,10 +201,7 @@ class Welcome extends CI_Controller {
 
 				$this->load->view('signIn');
 
-				// echo "ve lai view";
-
 			}
-			// echo "sai roi";
 
 		} else {
 
@@ -231,7 +217,6 @@ class Welcome extends CI_Controller {
 			if ($result != FALSE) {
 
 				foreach ($result as $key) {
-					// echo $key->email;
 
 						$session_data = array(
 
@@ -261,15 +246,13 @@ class Welcome extends CI_Controller {
 
 	public function logout() {
 
-// Removing session data
 		$sess_array = array(
 			'username' => ''
 		);
 		$this->session->unset_userdata('logged_in', $sess_array);
 		
 		$this->load->view('signIn');
-		// $data['message_display'] = 'Successfully Logout';
-		// $this->load->view('login_form', $data);
+		
 	}
 
 }
