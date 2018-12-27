@@ -2,14 +2,12 @@
 if (isset($this->session->userdata['logged_in'])) {
 $id = ($this->session->userdata['logged_in']['id']);
 $email = ($this->session->userdata['logged_in']['email']);
-} else {
- redirect(site_url("welcome/login"));
 }
+
 ?>
 
-
-
 <?php include('header.php') ?>
+
 <!--   modal start -->
   <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -45,8 +43,8 @@ $email = ($this->session->userdata['logged_in']['email']);
      ?>
 
     <div class="search">
-      <form action="<?php echo site_url('welcome/searchUser');?>" method = "post">
-        <input value="<?php echo $keyword; ?>" name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search email" />
+      <form action="<?php echo site_url('usersController/searchUser');?>" method = "post">
+        <input name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search email" />
         <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
       </form>
     </div>
@@ -56,6 +54,7 @@ $email = ($this->session->userdata['logged_in']['email']);
           <th>ID</th>
           <th>Name</th>
           <th>Email</th>
+          <th>Avatar</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -66,9 +65,10 @@ $email = ($this->session->userdata['logged_in']['email']);
             <td><?php echo $user->id; ?></td>
             <td><?php echo $user->name; ?></td>
             <td><?php echo $user->email; ?></td>
+            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php echo $user->img; ?>"></td>
             <td>
-              <?php echo anchor("welcome/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
-               <a href="#" data-href="<?php echo site_url("welcome/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
+              <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
+               <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
             </td>
           </tr>
           <?php } ?>
@@ -76,7 +76,7 @@ $email = ($this->session->userdata['logged_in']['email']);
 
         </tbody>
       </table>
-       
+       <?php// echo anchor('welcome/create', 'sign up', 'class="btn btn-primary"'); ?>
 
     </div>
 

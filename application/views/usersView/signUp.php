@@ -12,7 +12,7 @@
 
   
   <h1>sign up</h1>
- <?php echo form_open('welcome/doSignUp'); ?>
+ <?php echo form_open('usersController/doSignUp'); ?>
     <div class="form-group">
       <label for="email">Name:</label>
       <input type="text" name="name" placeholder="Enter name" class="form-control" id="email" >

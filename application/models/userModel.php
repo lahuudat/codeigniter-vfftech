@@ -58,11 +58,25 @@ class userModel extends CI_Model
 
 		$query = $this->db->get('user');
 
+		// echo $this->db->last_query(); die;
+
+		// exit();
+
 		if($query->num_rows()>0){
 
 			return $query->result();
 
 		}
+
+		// if($query->num_rows()<=0){
+
+		// 	$this->db->like('email','');
+
+		// 	$query2 = $this->db->get('user');
+
+		// 	return $query2->result();
+
+		// }
 
 	}
 

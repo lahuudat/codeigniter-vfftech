@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // session_start();
 
-class Welcome extends CI_Controller {
+class usersController extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -23,6 +23,12 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
 
+		if (!isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController/login"));
+
+		} 
+
 		$this->load->helper('url');
 
 		$this->load->model('userModel');
@@ -31,12 +37,20 @@ class Welcome extends CI_Controller {
 		// print_r($user);
 		// die();
 		// $this->load->view('welcome_message');
-		$this->load->view('index_view2',['users'=>$users]);
+		$this->load->view('usersView/index_view2',['users'=>$users]);
 	}
 
 	public function create()
 	{
-		$this->load->view('signUp');
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+
+		$this->load->view('usersView/signUp');
+
 	}
 
 	public function doSignUp()
@@ -65,7 +79,7 @@ class Welcome extends CI_Controller {
 
 				$this->session->set_flashdata('msg','Sign up successfully');
 
-				return redirect('welcome/login');
+				return redirect('usersController/login');
 
 			}else{
 
@@ -73,13 +87,13 @@ class Welcome extends CI_Controller {
 
 			}
 
-			return redirect('welcome/create');
+			return redirect('usersController/create');
 
 		}
 		else
 		{
 
-			$this->load->view('signUp');
+			$this->load->view('usersView/signUp');
 
 		}
 
@@ -88,11 +102,17 @@ class Welcome extends CI_Controller {
 	public function edit($id)
 	{
 
+		if (!isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController/login"));
+
+		} 
+
 		$this->load->model('userModel');
 
 		$user=$this->userModel->editUser($id);
 
-		$this->load->view('edit',['user'=>$user]);
+		$this->load->view('usersView/edit',['user'=>$user]);
 
 	}
 
@@ -100,6 +120,16 @@ class Welcome extends CI_Controller {
 	{
 
 		$this->load->helper('URL');
+
+		$this->load->library('upload');
+
+		$config['upload_path'] = './images/';
+
+		$config['allowed_types'] = 'gif|jpg|png';
+
+		$this->upload->initialize($config);
+
+		$field_name = "userImg";
 
 		$this->form_validation->set_rules('name', 'Name', 'required');
 
@@ -109,12 +139,26 @@ class Welcome extends CI_Controller {
 
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 
-		if ($this->form_validation->run())
+		if ($this->form_validation->run() && $this->upload->do_upload($field_name))
 		{
 
-			$data = $this->input->post();
+			$name = $this->input->post('name');
 
-			unset($data['passconf']);
+			$email = $this->input->post('email');
+
+			$password = $this->input->post('password');
+
+			$gambar = $this->upload->data();
+
+			$data = ([
+				'name'=>$name,
+				'email'=>$email,
+				'password'=>$password,
+				'img'=>$gambar['file_name']
+
+			]);
+
+			
 			
 			$this->load->model('userModel');
 
@@ -128,7 +172,7 @@ class Welcome extends CI_Controller {
 
 			}
 
-			return redirect('welcome');
+			return redirect('usersController');
 
 		}
 		else
@@ -138,7 +182,7 @@ class Welcome extends CI_Controller {
 
 			$user=$this->userModel->editUser($id);
 
-			$this->load->view('edit',['user'=>$user]);
+			$this->load->view('usersView/edit',['user'=>$user]);
 
 		}
 
@@ -146,6 +190,11 @@ class Welcome extends CI_Controller {
 
 	public function delete($id)
 	{
+		if (!isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController/login"));
+
+		} 
 
 		$this->load->model('userModel');
 
@@ -159,27 +208,40 @@ class Welcome extends CI_Controller {
 
 		}
 
-		return redirect('welcome');
+		return redirect('usersController');
 
 	}
 
 	public function searchUser()
 	{
 		
+		if (!isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController/login"));
+
+		} 
+
 		$keyword=$this->input->post('keyword');
 
 		$this->load->model('userModel');
 
         $users = $this->userModel->search($keyword);
 		
-		$this->load->view('search',['users'=>$users, 'keyword'=>$keyword]);
+		$this->load->view('usersView/search',['users'=>$users, 'keyword'=>$keyword]);
 
 	}
 
 	public function login()
 	{
 
-		$this->load->view('signIn');
+	if (isset($this->session->userdata['logged_in'])) {
+
+  		redirect(site_url("usersController"));
+
+	} 
+
+
+		$this->load->view('usersView/signIn');
 
 	}
 
@@ -199,7 +261,7 @@ class Welcome extends CI_Controller {
 
 			}else{
 
-				$this->load->view('signIn');
+				$this->load->view('usersView/signIn');
 
 			}
 
@@ -229,14 +291,14 @@ class Welcome extends CI_Controller {
 
 				$this->session->set_userdata('logged_in', $session_data);
 
-				return redirect('welcome');
+				return redirect('usersController');
 
 			} else {
 
 					
 				$this->session->set_flashdata('msg','Fail to sign in');
 
-				return redirect('welcome/login');
+				return redirect('usersController/login');
 
 			}
 
@@ -251,7 +313,7 @@ class Welcome extends CI_Controller {
 		);
 		$this->session->unset_userdata('logged_in', $sess_array);
 		
-		$this->load->view('signIn');
+		$this->load->view('usersView/signIn');
 		
 	}
 

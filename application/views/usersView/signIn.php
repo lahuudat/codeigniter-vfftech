@@ -1,11 +1,3 @@
-<?php
-if (isset($this->session->userdata['logged_in'])) {
-
-  redirect(site_url("welcome"));
-
-} 
-?>
-
 <?php include('header.php') ?>
 <div class="container">
 
@@ -20,7 +12,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
   
   <h1>sign in</h1>
- <?php echo form_open('welcome/doLogin'); ?>
+ <?php echo form_open('usersController/doLogin'); ?>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" name="email" placeholder="Enter email" class="form-control" id="email" >
@@ -32,7 +24,7 @@ if (isset($this->session->userdata['logged_in'])) {
       <?php echo form_error('password'); ?>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
-    <p>Don't have an account? <a href="<?php echo site_url("welcome/create"); ?>">sign up</a> </p>
+    <p>Don't have an account? <a href="<?php echo site_url("usersController/create"); ?>">sign up</a> </p>
   <?php echo form_close(); ?>
 </div>
 <?php include('footer.php') ?>

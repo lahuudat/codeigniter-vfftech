@@ -47,7 +47,7 @@
     <?php if(isset($email) && isset($id) ) echo "<div class='welcome'>".$email."--".$id."</div>"; ?>
 
     <?php if(isset($email) && isset($id) ){ ?>
-    <a style="float: right;" href="<?php echo site_url("welcome/logout"); ?>">logout</a>
+    <a style="float: right;" href="<?php echo site_url("usersController/logout"); ?>">logout</a>
     <?php } ?>
   </div>
   </nav>
