@@ -54,6 +54,8 @@ class userModel extends CI_Model
 	function search($keyword)
 	{
 
+		$result = array();
+
 		$this->db->like('email',$keyword);
 
 		$query = $this->db->get('user');
@@ -62,11 +64,13 @@ class userModel extends CI_Model
 
 		// exit();
 
-		if($query->num_rows()>0){
+		if ($query->num_rows() > 0) {
 
-			return $query->result();
+			$result = $query->result();
 
 		}
+
+		return $result;
 
 		// if($query->num_rows()<=0){
 

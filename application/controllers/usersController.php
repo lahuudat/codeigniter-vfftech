@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 // session_start();
 
-class usersController extends CI_Controller {
+class usersController extends MY_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -102,17 +102,21 @@ class usersController extends CI_Controller {
 	public function edit($id)
 	{
 
-		if (!isset($this->session->userdata['logged_in'])) {
+		/*if (!isset($this->session->userdata['logged_in'])) {
 
 			redirect(site_url("usersController/login"));
 
-		} 
+		}*/ 
+
+		$this->isLogin();
 
 		$this->load->model('userModel');
 
 		$user=$this->userModel->editUser($id);
 
-		$this->load->view('usersView/edit',['user'=>$user]);
+		$data = array_merge($this->data, ['user'=>$user]);
+
+		$this->load->view('usersView/edit', $data);
 
 	}
 
@@ -185,6 +189,22 @@ class usersController extends CI_Controller {
 			$this->load->view('usersView/edit',['user'=>$user]);
 
 		}
+
+	}
+
+	public function editPass($id){
+
+		if (!isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController/login"));
+
+		} 
+
+		// $this->load->model('userModel');
+
+		// $user=$this->userModel->editUser($id);
+
+		$this->load->view('usersView/editPass');
 
 	}
 
