@@ -1,8 +1,6 @@
 <?php
-if (isset($this->session->userdata['logged_in'])) {
-$id = ($this->session->userdata['logged_in']['id']);
-$email = ($this->session->userdata['logged_in']['email']);
-} 
+$id = $user_id;
+$email = $email;
 ?>
 
 

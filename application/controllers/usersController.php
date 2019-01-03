@@ -23,21 +23,17 @@ class usersController extends MY_Controller {
 	public function index()
 	{
 
-		if (!isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController/login"));
-
-		} 
+		$this->isLogin();
 
 		$this->load->helper('url');
 
 		$this->load->model('userModel');
 
 		$users = $this->userModel->getUser();
-		// print_r($user);
-		// die();
-		// $this->load->view('welcome_message');
-		$this->load->view('usersView/index_view2',['users'=>$users]);
+
+		$data = array_merge($this->data, ['users'=>$users]);
+		
+		$this->load->view('usersView/index_view2',$data);
 	}
 
 	public function create()
@@ -102,17 +98,19 @@ class usersController extends MY_Controller {
 	public function edit($id)
 	{
 
-		/*if (!isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController/login"));
-
-		}*/ 
-
 		$this->isLogin();
 
 		$this->load->model('userModel');
 
-		$user=$this->userModel->editUser($id);
+		if($this->userModel->editUser($id)!= null){
+
+			$user=$this->userModel->editUser($id);
+
+		}else{
+
+			echo "error 404 not found "; exit();
+
+		}
 
 		$data = array_merge($this->data, ['user'=>$user]);
 
@@ -122,6 +120,8 @@ class usersController extends MY_Controller {
 
 	public function doEdit($id)
 	{
+
+		$this->isLogin();
 
 		$this->load->helper('URL');
 
@@ -137,10 +137,6 @@ class usersController extends MY_Controller {
 
 		$this->form_validation->set_rules('name', 'Name', 'required');
 
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]|md5');
-
-		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
-
 		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 
 		if ($this->form_validation->run() && $this->upload->do_upload($field_name))
@@ -150,19 +146,112 @@ class usersController extends MY_Controller {
 
 			$email = $this->input->post('email');
 
-			$password = $this->input->post('password');
-
 			$gambar = $this->upload->data();
 
 			$data = ([
 				'name'=>$name,
 				'email'=>$email,
-				'password'=>$password,
 				'img'=>$gambar['file_name']
 
 			]);
-
 			
+			$this->load->model('userModel');
+
+			if($this->userModel->doEditUser($data,$id)){
+
+				$this->session->set_flashdata('msg','Edit successfully');
+
+			}else{
+
+				$this->session->set_flashdata('msg','Fail to edit');
+
+			}
+
+			return redirect('usersController');
+
+		}
+		else if($this->form_validation->run() && $this->upload->do_upload($field_name)==false){
+			
+			$name = $this->input->post('name');
+
+			$email = $this->input->post('email');
+
+			$data = ([
+				'name'=>$name,
+				'email'=>$email
+
+			]);
+
+			$this->load->model('userModel');
+
+			if($this->userModel->doEditUser($data,$id)){
+
+				$this->session->set_flashdata('msg','Edit successfully');
+
+			}else{
+
+				$this->session->set_flashdata('msg','Fail to edit');
+
+			}
+
+			return redirect('usersController');
+
+		}
+
+		else
+		{
+
+			$this->load->model('userModel');
+
+			$user=$this->userModel->editUser($id);
+
+			$this->load->view('usersView/edit',['user'=>$user]);
+
+		}
+
+	}
+
+	public function editPass($id){
+
+		$this->isLogin();
+
+		$this->load->model('userModel');
+
+		if($this->userModel->editUser($id)!= null){
+
+			$user=$this->userModel->editUser($id);
+
+		}else{
+
+			echo "error 404 not found "; exit();
+
+		}
+
+		$data = array_merge($this->data, ['user'=>$user]);
+
+		$this->load->view('usersView/editPass', $data);
+
+	}
+
+	public function doEditPass($id)
+	{
+
+		$this->isLogin();
+
+		$this->load->helper(array('form', 'url'));
+
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
+
+		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
+
+		if ($this->form_validation->run())
+		{
+
+			$password = $this->input->post('password');
+
+			$data = ([
+				'password'=>$password
+			]);
 			
 			$this->load->model('userModel');
 
@@ -186,35 +275,17 @@ class usersController extends MY_Controller {
 
 			$user=$this->userModel->editUser($id);
 
-			$this->load->view('usersView/edit',['user'=>$user]);
+			$data = array_merge($this->data, ['user'=>$user]);
+
+			$this->load->view('usersView/editPass', $data);
 
 		}
 
 	}
 
-	public function editPass($id){
-
-		if (!isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController/login"));
-
-		} 
-
-		// $this->load->model('userModel');
-
-		// $user=$this->userModel->editUser($id);
-
-		$this->load->view('usersView/editPass');
-
-	}
-
 	public function delete($id)
 	{
-		if (!isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController/login"));
-
-		} 
+		$this->isLogin();
 
 		$this->load->model('userModel');
 
@@ -235,19 +306,17 @@ class usersController extends MY_Controller {
 	public function searchUser()
 	{
 		
-		if (!isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController/login"));
-
-		} 
+		$this->isLogin();
 
 		$keyword=$this->input->post('keyword');
 
 		$this->load->model('userModel');
 
         $users = $this->userModel->search($keyword);
+
+        $data = array_merge($this->data, ['users'=>$users, 'keyword'=>$keyword]);
 		
-		$this->load->view('usersView/search',['users'=>$users, 'keyword'=>$keyword]);
+		$this->load->view('usersView/search',$data);
 
 	}
 
@@ -259,7 +328,6 @@ class usersController extends MY_Controller {
   		redirect(site_url("usersController"));
 
 	} 
-
 
 		$this->load->view('usersView/signIn');
 

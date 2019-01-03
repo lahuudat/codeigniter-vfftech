@@ -29,7 +29,7 @@
       <?php echo form_error('password'); ?>
     </div>
     <div class="form-group">
-      <label for="pwd">Nhập lại Password::</label>
+      <label for="pwd">Confirm Password:</label>
       <input type="password" class="form-control" id="confirm_password" placeholder="Confirm password" name="passconf">
       <?php echo form_error('passconf'); ?>
     </div>
@@ -38,19 +38,3 @@
   <?php echo form_close(); ?>
 </div>
 <?php include('footer.php') ?>
-<!-- <script type="text/javascript">
-  var password = document.getElementById("password")
-  , confirm_password = document.getElementById("confirm_password");
-
-  function validatePassword(){
-    if(password.value != confirm_password.value) {
-      confirm_password.setCustomValidity("Passwords Don't Match");
-    } else {
-      confirm_password.setCustomValidity('');
-    }
-  }
-
-  password.onchange = validatePassword;
-  confirm_password.onkeyup = validatePassword;
-
-</script> -->

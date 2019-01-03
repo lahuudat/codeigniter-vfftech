@@ -1,9 +1,6 @@
 <?php
-if (isset($this->session->userdata['logged_in'])) {
-$id = ($this->session->userdata['logged_in']['id']);
-$email = ($this->session->userdata['logged_in']['email']);
-}
-
+$id = $user_id;
+$email = $email;
 ?>
 
 <?php include('header.php') ?>
@@ -65,7 +62,9 @@ $email = ($this->session->userdata['logged_in']['email']);
             <td><?php echo $user->id; ?></td>
             <td><?php echo $user->name; ?></td>
             <td><?php echo $user->email; ?></td>
-            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php echo $user->img; ?>"></td>
+            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php if($user->img==''){ echo "profile.png"; }else{ echo $user->img; }  ?>"></td>
+
+
             <td>
               <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
                <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
