@@ -34,6 +34,7 @@ class usersController extends MY_Controller {
 		$data = array_merge($this->data, ['users'=>$users]);
 		
 		$this->load->view('usersView/index_view2',$data);
+
 	}
 
 	public function create()
@@ -240,6 +241,12 @@ class usersController extends MY_Controller {
 
 		$this->load->helper(array('form', 'url'));
 
+		$this->form_validation->set_rules('oldPassword', 'Password', 'trim|required|min_length[5]|md5');
+
+		$this->form_validation->set_rules('oldPasswordCf', 'Password', 'trim|required|matches[oldPassword]',
+			array('matches' => 'Incorrect password ')
+		);
+
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
 
 		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
@@ -403,6 +410,23 @@ class usersController extends MY_Controller {
 		
 		$this->load->view('usersView/signIn');
 		
+	}
+
+	public function listDeleteUsers()
+	{
+		
+		$this->isLogin();
+
+		$this->load->helper('url');
+
+		$this->load->model('userModel');
+
+		$users = $this->userModel->getUserDelete();
+
+		$data = array_merge($this->data, ['users'=>$users]);
+		
+		$this->load->view('usersView/listDeleteUsers',$data);
+
 	}
 
 }

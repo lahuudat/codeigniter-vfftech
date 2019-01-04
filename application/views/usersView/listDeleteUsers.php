@@ -39,15 +39,7 @@ $email = $email;
     endif;
      ?>
 
-    <div class="search">
-      <form action="<?php echo site_url('usersController/searchUser');?>" method = "post">
-        <input name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search email" />
-        <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
-      </form>
-    </div>
-
-    
-    <button style="float: right;" type="button" class="btn btn-default"><a href="<?php base_url(); ?>/codeigniter2/index.php/usersController/listDeleteUsers/">List delete user</a></button>
+    <h1>List deleted users</h1>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -55,7 +47,7 @@ $email = $email;
           <th>Name</th>
           <th>Email</th>
           <th>Avatar</th>
-          <th>Action</th>
+          <th>Deleted_at</th>
         </tr>
       </thead>
       <tbody>
@@ -69,8 +61,7 @@ $email = $email;
 
 
             <td>
-              <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
-               <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
+              <?php echo $user->deleted_at; ?>
             </td>
           </tr>
           <?php } ?>
@@ -78,6 +69,7 @@ $email = $email;
 
         </tbody>
       </table>
+       
 
     </div>
 

@@ -45,6 +45,8 @@ $email = $email;
         <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
       </form>
     </div>
+
+    <button style="float: right;" type="button" class="btn btn-default"><a href="<?php base_url(); ?>/codeigniter2/index.php/usersController/listDeleteUsers/">List delete user</a></button>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -72,7 +74,7 @@ $email = $email;
             <td><?php echo $user->id; ?></td>
             <td><?php echo $user->name; ?></td>
             <td><?php echo $user->email; ?></td>
-            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php echo $user->img; ?>"></td>
+            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php if($user->img==''){ echo "profile.png"; }else{ echo $user->img; }  ?>"></td>
             <td>
               <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
                <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
@@ -93,7 +95,5 @@ $email = $email;
 <script>
         $('#confirm-delete').on('show.bs.modal', function(e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
-            
-            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
         });
     </script>

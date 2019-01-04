@@ -8,11 +8,32 @@ class userModel extends CI_Model
 	public function getUser()
 	{	
 		
-		$query = $this->db->get('user');
+		$query = $this->db->get_where('user','deleted_at IS NULL' );
 
 		if($query->num_rows()>0){
 
 			return $query->result();
+
+		}else{
+
+			echo "not found";exit();
+
+		}
+
+	}
+
+	public function getUserDelete()
+	{
+		
+		$query = $this->db->get_where('user','deleted_at IS NOT NULL' );
+
+		if($query->num_rows()>0){
+
+			return $query->result();
+
+		}else{
+
+			echo "not found";exit();
 
 		}
 
@@ -34,6 +55,10 @@ class userModel extends CI_Model
 
 			return $query->row();
 
+		}else{
+
+			echo "not found";exit();
+			
 		}
 
 	}
@@ -48,7 +73,7 @@ class userModel extends CI_Model
 	public function deleteUser($id)
 	{
 		
-		return $this->db->where('id', $id)->delete('user');
+		return $this->db->query("UPDATE `user` SET `deleted_at` = now() WHERE `id` = '$id'");
 
 	}
 
@@ -57,14 +82,16 @@ class userModel extends CI_Model
 
 		$result = array();
 
-		$this->db->like('email',$keyword);
-
-		$query = $this->db->get('user');
+		$query = $this->db->query("SELECT * FROM user WHERE `email` LIKE '%$keyword%' ESCAPE '!' AND deleted_at IS NULL");
 
 		if ($query->num_rows() > 0) {
 
 			$result = $query->result();
 
+		}else{
+
+			echo "not found";exit();
+			
 		}
 
 		return $result;
@@ -73,7 +100,7 @@ class userModel extends CI_Model
 
 	public function login($data) {
 
-		$condition = "email =" . "'" . $data['email'] . "' AND " . "password =" . "'" . $data['password'] . "'";
+		$condition = "email =" . "'" . $data['email'] . "' AND " . "password =" . "'" . $data['password'] . "' AND " . "deleted_at IS NULL";
 
 		$this->db->select('*');
 

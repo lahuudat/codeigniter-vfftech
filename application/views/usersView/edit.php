@@ -30,6 +30,6 @@ $email = $email;
     <button type="submit" class="btn btn-default">Submit</button>
   <?php echo form_close(); ?>
   <br>
-    <?php echo anchor("usersController/editPass/{$user->id}", 'Edit password', 'class="btn btn-default"'); ?>
+    <?php echo anchor("usersController/editPass/{$user->id}", 'Change password', 'class="btn btn-default"'); ?>
 </div>
 <?php include('footer.php') ?>
