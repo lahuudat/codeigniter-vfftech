@@ -34,7 +34,7 @@
       <?php echo form_error('passconf'); ?>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
-    <p>Do have an account? <a href="<?php echo site_url("welcome/login"); ?>">sign in</a> </p>
+    <p>Do have an account? <a href="<?php echo site_url("usersController/login"); ?>">sign in</a> </p>
   <?php echo form_close(); ?>
 </div>
 <?php include('footer.php') ?>

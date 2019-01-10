@@ -24,9 +24,28 @@ class MY_Controller extends CI_Controller {
 			
 			$email = ($this->session->userdata['logged_in']['email']);
 
+			$role = ($this->session->userdata['logged_in']['role']);
+
 			$this->data['user_id'] = $id;
 
 			$this->data['email'] = $email;
+
+			$this->data['role'] = $role;		
+
+		}
+
+	}
+
+	public function isAdmin($ck)
+	{
+
+		$getUI = $this->data['user_id'];
+
+		$getRole = $this->data['role'];
+
+		if($getRole == 0 && $getUI != $ck ){
+
+			die("not found");
 
 		}
 

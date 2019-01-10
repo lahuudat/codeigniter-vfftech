@@ -16,3 +16,6 @@ DROP TABLE groups;
 
 -- 04/01/2019
 ALTER TABLE `user` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `img`;
+
+-- 10/01/2019
+ALTER TABLE `user` ADD `role` INT NOT NULL DEFAULT '0' AFTER `img`;

@@ -109,6 +109,8 @@ class usersController extends MY_Controller {
 
 		$this->isLogin();
 
+		$this->isAdmin($id);
+
 		$this->load->model('userModel');
 
 		if($this->userModel->editUser($id)!= null){
@@ -131,6 +133,8 @@ class usersController extends MY_Controller {
 	{
 
 		$this->isLogin();
+
+		$this->isAdmin($id);
 
 		$this->load->helper('URL');
 
@@ -224,6 +228,8 @@ class usersController extends MY_Controller {
 
 		$this->isLogin();
 
+		$this->isAdmin($id);
+
 		$this->load->model('userModel');
 
 		if($this->userModel->editUser($id)!= null){
@@ -246,6 +252,8 @@ class usersController extends MY_Controller {
 	{
 
 		$this->isLogin();
+
+		$this->isAdmin($id);
 
 		$this->load->helper(array('form', 'url'));
 
@@ -301,6 +309,8 @@ class usersController extends MY_Controller {
 	public function delete($id)
 	{
 		$this->isLogin();
+
+		$this->isAdmin($id);
 
 		$this->load->model('userModel');
 
@@ -387,6 +397,7 @@ class usersController extends MY_Controller {
 
 						'id' => $key->id,
 						'email' => $key->email,
+						'role' => $key->role
 					);
 
 				}
