@@ -1,14 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-include APPPATH . "../storage/PHPMailer-master/src/PHPMailer.php";
-include APPPATH . "../storage/PHPMailer-master/src/Exception.php";
-include APPPATH . "../storage/PHPMailer-master/src/OAuth.php";
-include APPPATH . "../storage/PHPMailer-master/src/POP3.php";
-include APPPATH . "../storage/PHPMailer-master/src/SMTP.php";
- 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
+
 
 
 class usersController extends MY_Controller {
@@ -42,6 +35,13 @@ class usersController extends MY_Controller {
 		$data = array_merge($this->data, ['users'=>$users]);
 		
 		$this->load->view('usersView/index_view2',$data);
+
+	}
+
+	public function alert()
+	{
+
+		$this->load->view('usersView/alert');
 
 	}
 
@@ -119,7 +119,9 @@ class usersController extends MY_Controller {
 
 		}else{
 
-			echo "error 404 not found "; exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 
 		}
 
@@ -224,6 +226,30 @@ class usersController extends MY_Controller {
 
 	}
 
+	public function editNameAjax()
+	{
+
+		$name = $_POST['namea'];
+
+		$email = $_POST['emaila'];
+
+		$id = $_POST['ida'];
+
+			$data = ([
+				'name'=>$name,
+				'email'=>$email
+			]);
+			
+			$this->load->model('userModel');
+
+			if($this->userModel->doEditUser($data,$id)){
+
+				echo " Edit successfully";
+
+			}
+
+	}
+
 	public function editPass($id){
 
 		$this->isLogin();
@@ -238,7 +264,9 @@ class usersController extends MY_Controller {
 
 		}else{
 
-			echo "error 404 not found "; exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 
 		}
 
@@ -445,168 +473,6 @@ class usersController extends MY_Controller {
 		$data = array_merge($this->data, ['users'=>$users]);
 		
 		$this->load->view('usersView/listDeleteUsers',$data);
-
-	}
-
-	public function forgotPass()
-	{
-		
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-
-		$this->load->view('usersView/forgotPass');
-
-
-	}
-
-	public function doForgotPass()
-	{
-		
-		$this->load->library('form_validation');
-
-		$this->form_validation->set_rules('email', 'Email', 'required|trim|xss_clean|callback_validate_credentials');
-
-		$this->load->model('userModel');
-
-		if($this->userModel->emailExists()){
-
-			$temp_pass = md5(uniqid());
-
-	        $mail = new PHPMailer(true);                              
-	        try {
-			    
-			    $mail->SMTPDebug = 0;                                
-			    $mail->isSMTP();
-
-			    $mail->Host = 'smtp.gmail.com';  
-
-			    $mail->SMTPAuth = true;                               
-			    $mail->Username = 'huudat055@gmail.com';                 
-			    $mail->Password = 'huudat994';                           
-			    $mail->SMTPSecure = 'tls';                            
-			   	$mail->Port = 587;                                
-
-			   	$mail->setFrom('huudat055@gmail.com', 'Vfftech');
-
-			    $mail->addAddress('ladat66@gmail.com');      
-
-	    		$mail->isHTML(true);                                  
-	    		$mail->Subject = 'Resset your password';
-
-	    		$mail->Body    = "<p>This email has been sent as a request to reset our password</p><p><a href='".base_url()."index.php/usersController/resetPassword/$temp_pass'>Click here </a>if you want to reset your password,if not, then ignore</p>";
-
-	    		if($mail->send()){
-
-	    			 $this->load->model('userModel');
-
-                	if($this->userModel->tempResetPassword($temp_pass)){
-
-                    	echo "check your email for instructions, thank you";
-
-                	}
-
-	    		}else{
-
-	    			echo "email was not sent, please contact your administrator";
-
-	    		}
-
-			} catch (Exception $e) {
-
-				echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
-
-			}
-
-		}else{
-
-			die("email is not exist");
-
-		}
-
-	}
-
-	public function resetPassword($temp_pass){
-
-		$data = array(
-
-				'password' => $temp_pass
-
-			);
-
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-
-		$this->load->model('userModel');
-
-
-
-		if($this->userModel->isTempPassValid($temp_pass)){
-
-			$this->load->view('usersView/resetPassword', $data);
-
-		}else{
-
-			echo "the key is not valid";    
-		}
-
-	}
-
-	public function doResetPassword($passwordf)
-	{
-
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-		
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
-
-		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
-
-		if ($this->form_validation->run())
-		{
-
-			$password = $this->input->post('password');
-
-			$data = ([
-				'password'=>$password
-			]);
-			
-			$this->load->model('userModel');
-
-			$getId = $this->userModel->getId($passwordf);
-
-			if($this->userModel->doEditUser($data,$getId->id)){
-
-				$this->session->set_flashdata('msg','Change password successfully');
-
-				return redirect('usersController/login');
-
-			}else{
-
-				$this->session->set_flashdata('msg','Fail to change');
-
-			}
-
-		}
-		else
-		{
-			$data = array(
-
-				'password' => $passwordf
-
-			);
-
-			$this->load->view('usersView/resetPassword', $data);
-
-		}
 
 	}
 

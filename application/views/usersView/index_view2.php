@@ -68,8 +68,9 @@ $role = $role;
             <td><?php echo $user->name; ?></td>
             <td><?php echo $user->email; ?></td>
             <td><?php if($user->role == 1){ echo "Admin";}else{echo "Member"; } ?></td>
-            <td><img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php if($user->img==''){ echo "profile.png"; }else{ echo $user->img; }  ?>"></td>
-
+            <td>
+              <?php $eimg = "images/".$user->img; ?>
+              <img style=" width: 100px; height: 100px;" src="<?php echo base_url(); ?>images/<?php if($user->img==''){ echo "profile.png"; }else if(!file_exists($eimg)){ echo "tmp.png"; } else{ echo $user->img; }  ?>"></td>
 
             <td> <?php if($user->id == $id && $role == 0 ){ ?>
               <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>

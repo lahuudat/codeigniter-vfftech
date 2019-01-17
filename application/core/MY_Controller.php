@@ -1,6 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+include APPPATH . "../storage/PHPMailer-master/src/PHPMailer.php";
+include APPPATH . "../storage/PHPMailer-master/src/Exception.php";
+include APPPATH . "../storage/PHPMailer-master/src/OAuth.php";
+include APPPATH . "../storage/PHPMailer-master/src/POP3.php";
+include APPPATH . "../storage/PHPMailer-master/src/SMTP.php";
+ 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 class MY_Controller extends CI_Controller {
 
 	public $data = array();
@@ -50,6 +59,182 @@ class MY_Controller extends CI_Controller {
 		}
 
 	}
+
+	public function forgotPass()
+	{
+		
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+
+		$this->load->view('usersView/forgotPass');
+
+
+	}
+
+	public function doForgotPass()
+	{
+		
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email', 'Email', 'required|trim|xss_clean|callback_validate_credentials');
+
+		$emailForgot = $this->input->post('email');
+
+		$this->load->model('userModel');
+
+		if($this->userModel->emailExists($emailForgot)){
+
+			$temp_pass = md5(uniqid());
+
+	        $mail = new PHPMailer(true);                              
+	        try {
+			    
+			    $mail->SMTPDebug = 0;                                
+			    $mail->isSMTP();
+
+			    $mail->Host = 'smtp.gmail.com';  
+
+			    $mail->SMTPAuth = true;                               
+			    $mail->Username = 'huudat055@gmail.com';                 
+			    $mail->Password = 'huudat994';                           
+			    $mail->SMTPSecure = 'tls';                            
+			   	$mail->Port = 587;                                
+
+			   	$mail->setFrom('huudat055@gmail.com', 'Vfftech');
+
+			    $mail->addAddress($emailForgot);      
+
+	    		$mail->isHTML(true);                                  
+	    		$mail->Subject = 'Resset your password';
+
+	    		$mail->Body    = "<p>This email has been sent as a request to reset our password</p><p><a href='".base_url()."index.php/usersController/resetPassword/$temp_pass'>Click here </a>if you want to reset your password,if not, then ignore</p>";
+
+	    		if($mail->send()){
+
+	    			 $this->load->model('userModel');
+
+	    			 $data = array(
+	    			 	'email' =>$this->input->post('email'),
+	    			 	'key_pass'=>$temp_pass
+	    			 );
+
+                	if($this->userModel->tempResetPassword($data,$emailForgot)){
+
+                    	$this->session->set_flashdata('msg2','check your email for instructions, thank you');
+
+						return redirect('usersController/alert');
+
+                	}
+
+	    		}else{
+
+	    			$this->session->set_flashdata('msg','email was not sent, please contact your administrator');
+
+					return redirect('usersController/alert');
+
+	    		}
+
+			} catch (Exception $e) {
+
+				echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+
+			}
+
+		}else{
+
+			$this->session->set_flashdata('msg','email is not exist');
+
+			return redirect('usersController/alert');
+
+		}
+
+	}
+
+	public function resetPassword($temp_pass){
+
+		$data = array(
+
+				'password' => $temp_pass
+
+			);
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+
+		$this->load->model('userModel');
+
+		if($this->userModel->isTempPassValid($temp_pass)){
+
+			$this->load->view('usersView/resetPassword', $data);
+
+		}else{
+
+			$this->session->set_flashdata('msg','the key is not valid');
+
+			return redirect('usersController/alert');    
+		}
+
+	}
+
+	public function doResetPassword($passwordf)
+	{
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+		
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
+
+		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
+
+		if ($this->form_validation->run())
+		{
+
+			$password = $this->input->post('password');
+
+			$data = ([
+				'password'=>$password
+			]);
+			
+			$this->load->model('userModel');
+
+			$getId = $this->userModel->getId($passwordf);
+
+			if($this->userModel->doEditUser($data,$getId->id)){
+
+				$this->session->set_flashdata('msg','Change password successfully');
+
+				return redirect('usersController/login');
+
+			}else{
+
+				$this->session->set_flashdata('msg','Fail to change');
+
+			}
+
+		}
+		else
+		{
+			$data = array(
+
+				'password' => $passwordf
+
+			);
+
+			$this->load->view('usersView/resetPassword', $data);
+
+		}
+
+	}
+
 
 
 

@@ -16,7 +16,9 @@ class userModel extends CI_Model
 
 		}else{
 
-			echo "not found";exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 
 		}
 
@@ -33,7 +35,9 @@ class userModel extends CI_Model
 
 		}else{
 
-			echo "not found";exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 
 		}
 
@@ -41,7 +45,8 @@ class userModel extends CI_Model
 
 	public function getId($password)
 	{
-		$query = $this->db->query("SELECT `id` FROM user WHERE `password` = '$password'");
+		
+		$query = $this->db->query("SELECT `id` FROM user WHERE `key_pass` = '$password'");
 
 		if($query->num_rows()>0){
 
@@ -49,7 +54,9 @@ class userModel extends CI_Model
 
 		}else{
 
-			echo "not found";exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 
 		}
 	}
@@ -72,7 +79,9 @@ class userModel extends CI_Model
 
 		}else{
 
-			echo "not found";exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 			
 		}
 
@@ -110,7 +119,9 @@ class userModel extends CI_Model
 
 		}else{
 
-			echo "not found";exit();
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController/alert');
 			
 		}
 
@@ -142,11 +153,9 @@ class userModel extends CI_Model
 
 	}
 
-	public function emailExists(){
+	public function emailExists($emailForgot){
 
-		$email = $this->input->post('email');
-
-		$query = $this->db->query("SELECT email, password FROM user WHERE email='$email'");  
+		$query = $this->db->query("SELECT email, password FROM user WHERE email='$emailForgot'"); 
 
 		if($row = $query->row()){
 
@@ -160,19 +169,11 @@ class userModel extends CI_Model
 
 	}
 
-	public function tempResetPassword($temp_pass){
+	public function tempResetPassword($data,$emailForgot){
 
-		$data = array(
-			'email' =>$this->input->post('email'),
-			'password'=>$temp_pass);
+		$this->db->where('email', $emailForgot);
 
-		$email = $data['email'];
-
-		if($data){
-
-			$this->db->where('email', $email);
-
-			$this->db->update('user', $data);
+		if($this->db->update('user', $data)){
 
 			return TRUE;
 
@@ -186,7 +187,7 @@ class userModel extends CI_Model
 
 	public function isTempPassValid($temp_pass){
 
-		$this->db->where('password', $temp_pass);
+		$this->db->where('key_pass', $temp_pass);
 
 		$query = $this->db->get('user');
 

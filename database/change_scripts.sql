@@ -19,3 +19,6 @@ ALTER TABLE `user` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `img`;
 
 -- 10/01/2019
 ALTER TABLE `user` ADD `role` INT NOT NULL DEFAULT '0' AFTER `img`;
+
+-- 16/01/2019
+ALTER TABLE `user` ADD `key_pass` VARCHAR(255) NOT NULL AFTER `password`;
