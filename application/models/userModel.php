@@ -91,7 +91,7 @@ class userModel extends CI_Model
 	{
 
 		return $this->db->where('id', $id)->update('user', $data);
-
+	
 	}
 
 	public function changePass($data)
@@ -168,6 +168,23 @@ class userModel extends CI_Model
     	}
 
 	}
+
+	public function passRequired($id,$md5po){
+
+		$query = $this->db->query("SELECT * FROM user WHERE id='$id' AND password='$md5po'"); 
+
+		if($row = $query->row()){
+
+			return TRUE;
+
+		}else{
+
+			return FALSE;
+
+    	}
+
+	}
+
 
 	public function tempResetPassword($data,$emailForgot){
 

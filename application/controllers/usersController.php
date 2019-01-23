@@ -246,8 +246,64 @@ class usersController extends MY_Controller {
 
 				echo " Edit successfully";
 
+			}else{
+
+				echo " Edit fail";
+
 			}
 
+	}
+
+	public function uploadImgAjax()
+	{
+
+		if (isset($_POST) && !empty($_FILES['file'])) {
+
+			$idd = $_POST['id']; 
+
+    		$duoi = explode('.', $_FILES['file']['name']); 
+
+    		$duoi = $duoi[(count($duoi) - 1)]; 
+
+    		if ($duoi === 'jpg' || $duoi === 'png' || $duoi === 'jpeg') {
+
+    			$temp = explode(".", $_FILES["file"]["name"]);
+
+				$newfilename = round(microtime(true)) . '.' . end($temp);
+       
+    			if (move_uploaded_file($_FILES['file']['tmp_name'], './images/' . $newfilename)) {
+            
+            		$data = ([
+					'img'=>$newfilename
+					]);
+
+					$this->load->model('userModel');
+
+					if($this->userModel->doEditUser($data,$idd)){
+
+					
+						echo "<div class='alert alert-success alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Upload successfully...</div>";
+
+					}else{
+
+						echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Fail to upload</div>";
+					}
+
+        		} else { 
+
+            		echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Fail to upload</div>";
+
+        		}
+
+    		} else { 
+
+        		echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Fail to upload</div>";
+    		}
+
+		} else {
+
+    		echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Fail to upload</div>";
+		}
 	}
 
 	public function editPass($id){
@@ -330,6 +386,55 @@ class usersController extends MY_Controller {
 
 			$this->load->view('usersView/editPass', $data);
 
+		}
+
+	}
+
+	public function changePassAjax()
+	{
+
+		$id = $_POST['id'];
+
+		$po = $_POST['oldPassword'];
+
+		$md5po = md5($po);
+
+		$pn = $_POST['password'];
+
+		$md5pn = md5($pn);
+
+		$pc = $_POST['passconf'];
+
+		$md5pc = md5($pc);
+
+		$this->load->model('userModel');
+
+		if($this->userModel->passRequired($id,$md5po)==false){
+
+			echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Password is incorrect..</div>";
+
+		}else{
+
+			if($md5pn != $md5pc){
+
+				echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Please check that you've entered and confirmed your password!</div>";
+
+			}else{
+
+				$data = ([
+					'password'=>$md5pn
+				]);
+
+				if($this->userModel->doEditUser($data,$id)){
+
+					
+					echo "<div class='alert alert-success alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Edit successfully...</div>";
+
+				}else{
+
+					echo "<div class='alert alert-warning alert-dismissable'><button type='button' class='close'data-dismiss='alert' aria-hidden='true'>×</button>Fail to edit</div>";
+				}
+			}
 		}
 
 	}
@@ -473,6 +578,101 @@ class usersController extends MY_Controller {
 		$data = array_merge($this->data, ['users'=>$users]);
 		
 		$this->load->view('usersView/listDeleteUsers',$data);
+
+	}
+
+	public function forgotPass()
+	{
+		
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+
+		$this->load->view('usersView/forgotPass');
+
+	}
+
+	public function resetPassword($temp_pass){
+
+		$data = array(
+
+				'password' => $temp_pass
+
+			);
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+
+		$this->load->model('userModel');
+
+		if($this->userModel->isTempPassValid($temp_pass)){
+
+			$this->load->view('usersView/resetPassword', $data);
+
+		}else{
+
+			$this->session->set_flashdata('msg','the key is not valid');
+
+			return redirect('usersController/alert');    
+		}
+
+	}
+
+	public function doResetPassword($passwordf)
+	{
+
+		if (isset($this->session->userdata['logged_in'])) {
+
+			redirect(site_url("usersController"));
+
+		} 
+		
+		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
+
+		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
+
+		if ($this->form_validation->run())
+		{
+
+			$password = $this->input->post('password');
+
+			$data = ([
+				'password'=>$password
+			]);
+			
+			$this->load->model('userModel');
+
+			$getId = $this->userModel->getId($passwordf);
+
+			if($this->userModel->doEditUser($data,$getId->id)){
+
+				$this->session->set_flashdata('msg','Change password successfully');
+
+				return redirect('usersController/login');
+
+			}else{
+
+				$this->session->set_flashdata('msg','Fail to change');
+
+			}
+
+		}
+		else
+		{
+			$data = array(
+
+				'password' => $passwordf
+
+			);
+
+			$this->load->view('usersView/resetPassword', $data);
+
+		}
 
 	}
 

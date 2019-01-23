@@ -54,23 +54,11 @@ class MY_Controller extends CI_Controller {
 
 		if($getRole == 0 && $getUI != $ck ){
 
-			die("not found");
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('usersController');
 
 		}
-
-	}
-
-	public function forgotPass()
-	{
-		
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-
-		$this->load->view('usersView/forgotPass');
-
 
 	}
 
@@ -125,7 +113,7 @@ class MY_Controller extends CI_Controller {
 
                     	$this->session->set_flashdata('msg2','check your email for instructions, thank you');
 
-						return redirect('usersController/alert');
+						return redirect('usersController/forgotPass');
 
                 	}
 
@@ -133,7 +121,7 @@ class MY_Controller extends CI_Controller {
 
 	    			$this->session->set_flashdata('msg','email was not sent, please contact your administrator');
 
-					return redirect('usersController/alert');
+					return redirect('usersController/forgotPass');
 
 	    		}
 
@@ -147,93 +135,13 @@ class MY_Controller extends CI_Controller {
 
 			$this->session->set_flashdata('msg','email is not exist');
 
-			return redirect('usersController/alert');
+			return redirect('usersController/forgotPass');
 
 		}
 
 	}
 
-	public function resetPassword($temp_pass){
-
-		$data = array(
-
-				'password' => $temp_pass
-
-			);
-
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-
-		$this->load->model('userModel');
-
-		if($this->userModel->isTempPassValid($temp_pass)){
-
-			$this->load->view('usersView/resetPassword', $data);
-
-		}else{
-
-			$this->session->set_flashdata('msg','the key is not valid');
-
-			return redirect('usersController/alert');    
-		}
-
-	}
-
-	public function doResetPassword($passwordf)
-	{
-
-		if (isset($this->session->userdata['logged_in'])) {
-
-			redirect(site_url("usersController"));
-
-		} 
-		
-		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|md5');
-
-		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'trim|required|matches[password]|md5');
-
-		if ($this->form_validation->run())
-		{
-
-			$password = $this->input->post('password');
-
-			$data = ([
-				'password'=>$password
-			]);
-			
-			$this->load->model('userModel');
-
-			$getId = $this->userModel->getId($passwordf);
-
-			if($this->userModel->doEditUser($data,$getId->id)){
-
-				$this->session->set_flashdata('msg','Change password successfully');
-
-				return redirect('usersController/login');
-
-			}else{
-
-				$this->session->set_flashdata('msg','Fail to change');
-
-			}
-
-		}
-		else
-		{
-			$data = array(
-
-				'password' => $passwordf
-
-			);
-
-			$this->load->view('usersView/resetPassword', $data);
-
-		}
-
-	}
+	
 
 
 

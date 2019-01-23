@@ -48,7 +48,7 @@ $role = $role;
     </div>
 
     
-    <button style="float: right;" type="button" class="btn btn-default"><a href="<?php base_url(); ?>/codeigniter2/index.php/usersController/listDeleteUsers/">List delete user</a></button>
+    <button style="float: right;" type="button" class="btn btn-default"><a href="<?php echo base_url(); ?>index.php/usersController/listDeleteUsers/">List delete user</a></button>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -74,7 +74,7 @@ $role = $role;
 
             <td> <?php if($user->id == $id && $role == 0 ){ ?>
               <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
-               <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
+               <a href="#" data-href="<?php echo site_url("usersController/delete/$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
                <?php }else if($role == 1) { ?>
                   <?php echo anchor("usersController/edit/{$user->id}", 'edit', 'class="btn btn-info"'); ?>
                <a href="#" data-href="<?php echo site_url("usersController/delete/{$user->id}"); ?>" data-toggle="modal" class="btn btn-danger" data-target="#confirm-delete">Delete</a>
@@ -94,5 +94,7 @@ $role = $role;
 <script>
         $('#confirm-delete').on('show.bs.modal', function(e) {
             $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+            
+            $('.debug-url').html('Delete URL: <strong>' + $(this).find('.btn-ok').attr('href') + '</strong>');
         });
     </script>
