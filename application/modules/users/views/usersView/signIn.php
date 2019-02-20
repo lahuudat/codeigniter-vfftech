@@ -12,7 +12,7 @@
 
   
   <h1>sign in</h1>
- <?php echo form_open('usersController/doLogin'); ?>
+ <?php echo form_open('users/usersController/doLogin'); ?>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" name="email" placeholder="Enter email" class="form-control" id="email" >

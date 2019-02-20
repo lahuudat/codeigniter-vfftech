@@ -42,7 +42,7 @@ $email = $email;
     <button style="margin-bottom: 20px" id="submit" class="btn btn-default">Submit</button>
   <!-- </form> -->
   <br>
-    <?php echo anchor("usersController/editPass/{$user->id}", 'Change password', 'class="btn btn-default"'); ?>
+    <?php echo anchor("users/usersController/editPass/{$user->id}", 'Change password', 'class="btn btn-default"'); ?>
     </div>
   </div>
 
@@ -86,7 +86,7 @@ $email = $email;
         if (type == match[0] || type == match[1] || type == match[2]) {
 
             $.ajax({
-                url: "/codeigniter2/index.php/usersController/uploadImgAjax", 
+                url: "/codeigniter2/users/usersController/uploadImgAjax", 
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -127,7 +127,7 @@ $email = $email;
           else{
             $.ajax({
               type : "POST",
-              url : "/codeigniter2/index.php/usersController/editNameAjax",
+              url : "/codeigniter2/users/usersController/editNameAjax",
               data: {
                 namea : name,
                 emaila : email,

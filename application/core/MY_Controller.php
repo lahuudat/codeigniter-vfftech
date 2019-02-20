@@ -25,7 +25,7 @@ class MY_Controller extends CI_Controller {
 		
 		if (!isset($this->session->userdata['logged_in'])) {
 
-	  		redirect(site_url("usersController/login"));
+	  		redirect(site_url("users/usersController/login"));
 
 		} else {
 

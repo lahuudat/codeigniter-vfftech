@@ -49,7 +49,7 @@
     <?php if(isset($email) && isset($id) && isset($role) ) echo "<div class='welcome'>".$email."--".$id."--".$role."</div>"; ?>
 
     <?php if(isset($email) && isset($id) && isset($role) ){ ?>
-    <a style="float: right;" href="<?php echo site_url("usersController/logout"); ?>">logout</a>
+    <a style="float: right;" href="<?php echo site_url("users/usersController/logout"); ?>">logout</a>
     <?php } ?>
   </div>
   </nav>

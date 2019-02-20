@@ -127,7 +127,7 @@ class usersController extends MY_Controller {
 
 		$data = array_merge($this->data, ['user'=>$user]);
 
-		$this->load->view('usersView/edit', $data);
+		$this->load->view('users/usersView/edit', $data);
 
 	}
 
@@ -170,7 +170,7 @@ class usersController extends MY_Controller {
 
 			]);
 			
-			$this->load->model('userModel');
+			$this->load->model('users/userModel');
 
 			if($this->userModel->doEditUser($data,$id)){
 
@@ -182,7 +182,7 @@ class usersController extends MY_Controller {
 
 			}
 
-			return redirect('usersController');
+			return redirect('users/usersController');
 
 		}
 		else if($this->form_validation->run() && $this->upload->do_upload($field_name)==false){
@@ -197,7 +197,7 @@ class usersController extends MY_Controller {
 
 			]);
 
-			$this->load->model('userModel');
+			$this->load->model('users/userModel');
 
 			if($this->userModel->doEditUser($data,$id)){
 
@@ -240,7 +240,7 @@ class usersController extends MY_Controller {
 				'email'=>$email
 			]);
 			
-			$this->load->model('userModel');
+			$this->load->model('users/userModel');
 
 			if($this->userModel->doEditUser($data,$id)){
 
@@ -277,7 +277,7 @@ class usersController extends MY_Controller {
 					'img'=>$newfilename
 					]);
 
-					$this->load->model('userModel');
+					$this->load->model('users/userModel');
 
 					if($this->userModel->doEditUser($data,$idd)){
 
@@ -457,7 +457,7 @@ class usersController extends MY_Controller {
 
 		}
 
-		return redirect('usersController');
+		return redirect('users/usersController');
 
 	}
 
@@ -487,7 +487,7 @@ class usersController extends MY_Controller {
 
 	} 
 
-		$this->load->view('usersView/signIn');
+		$this->load->view('users/usersView/signIn');
 
 	}
 
@@ -503,11 +503,11 @@ class usersController extends MY_Controller {
 		if ($this->form_validation->run() == FALSE) {
 
 			if(isset($this->session->userdata['logged_in'])){
-				$this->load->view('index_view2');
+				$this->load->view('users/usersView/index_view2');
 
 			}else{
 
-				$this->load->view('usersView/signIn');
+				$this->load->view('users/usersView/signIn');
 
 			}
 
@@ -538,14 +538,14 @@ class usersController extends MY_Controller {
 
 				$this->session->set_userdata('logged_in', $session_data);
 
-				return redirect('usersController');
+				return redirect('users/usersController');
 
 			} else {
 
 					
 				$this->session->set_flashdata('msg','Fail to sign in');
 
-				return redirect('usersController/login');
+				return redirect('users/usersController/login');
 
 			}
 
