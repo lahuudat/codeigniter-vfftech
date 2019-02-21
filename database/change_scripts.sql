@@ -37,3 +37,5 @@ ALTER TABLE `product` ADD `id_author` INT NOT NULL AFTER `id_category`;
 ALTER TABLE `author` CHANGE `information` `information` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 ALTER TABLE `product` CHANGE `description` `description` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+ALTER TABLE `product` ADD `image` VARCHAR(255) NOT NULL AFTER `id_author`;
