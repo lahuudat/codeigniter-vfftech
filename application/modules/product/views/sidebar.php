@@ -9,7 +9,7 @@
                     <ul class="list-group">
                         <?php foreach ($cate as $ct ) {
                         ?>
-                        <li class="list-group-item"><?php echo $ct->name; ?>
+                        <li class="list-group-item"><a href="<?php echo site_url("product/productController/category/{$ct->id_category}"); ?>"><?php echo $ct->name; ?></a>
                             <span class="label label-success pull-right"><?php echo $ct->total; ?></span>
                         </li>
                         <?php } ?>

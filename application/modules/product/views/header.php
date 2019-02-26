@@ -55,9 +55,9 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-right" role="search">
+                <form method="post" action="<?php echo site_url('product/productController/searchProduct');?>" class="navbar-form navbar-right" role="search">
                     <div class="form-group">
-                        <input type="text" placeholder="Enter Keyword Here ..." class="form-control">
+                        <input name = "keyword" type="text" placeholder="Enter Keyword Here ..." class="form-control">
                     </div>
                     &nbsp; 
                     <button type="submit" class="btn btn-primary">Search</button>

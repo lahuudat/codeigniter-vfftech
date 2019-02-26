@@ -1,12 +1,4 @@
 
-            <div class="col-md-9">
-                <div>
-                    <ol class="breadcrumb">
-                        <li><a href="#">Home</a></li>
-                        <li class="active">News</li>
-                    </ol>
-                </div>
-                <!-- /.div -->
                 
                 <div class="row">
 
@@ -42,4 +34,5 @@
                     </ul>
                 </div>
                 <!-- /.row -->
-                
+            </div>
+        </div>
