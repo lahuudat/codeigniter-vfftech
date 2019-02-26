@@ -86,7 +86,7 @@ $email = $email;
         if (type == match[0] || type == match[1] || type == match[2]) {
 
             $.ajax({
-                url: "/codeigniter2/users/usersController/uploadImgAjax", 
+                url: "<?php echo base_url(); ?>/users/usersController/uploadImgAjax", 
                 cache: false,
                 contentType: false,
                 processData: false,
@@ -127,7 +127,7 @@ $email = $email;
           else{
             $.ajax({
               type : "POST",
-              url : "/codeigniter2/users/usersController/editNameAjax",
+              url : "<?php echo base_url(); ?>/users/usersController/editNameAjax",
               data: {
                 namea : name,
                 emaila : email,

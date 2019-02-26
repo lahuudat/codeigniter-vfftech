@@ -24,8 +24,8 @@
       <?php echo form_error('password'); ?>
     </div>
     <button type="submit" class="btn btn-default">Submit</button>
-    <p>Don't have an account? <a href="<?php echo site_url("usersController/create"); ?>">sign up</a> </p>
-    <a href="<?php echo site_url("usersController/forgotPass"); ?>">Forgot your password?</a>
+    <p>Don't have an account? <a href="<?php echo site_url("users/usersController/create"); ?>">sign up</a> </p>
+    <a href="<?php echo site_url("users/usersController/forgotPass"); ?>">Forgot your password?</a>
   <?php echo form_close(); ?>
 </div>
 <?php include('footer.php') ?>

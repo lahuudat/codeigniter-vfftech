@@ -7,7 +7,7 @@ $email = $email;
   <h1>Change Password</h1>
    <div id="display"></div>
  
-   <form method="POST" id="formPass" action="/codeigniter2/users/usersController/changePassAjax">
+   <form method="POST" id="formPass" action="<?php echo base_url(); ?>/users/usersController/changePassAjax">
 
    <input type="hidden" name="id" id="id" value="<?php echo $user->id; ?>">
 
