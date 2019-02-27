@@ -466,7 +466,7 @@ class usersController extends MY_Controller {
 		
 		$this->isLogin();
 
-		$keyword=$this->input->post('keyword');
+		$keyword=$this->input->get('keyword');
 
 		$this->load->model('userModel');
 

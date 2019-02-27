@@ -41,7 +41,7 @@ $role = $role;
      ?>
 
     <div class="search">
-      <form action="<?php echo site_url('users/usersController/searchUser');?>" method = "post">
+      <form action="<?php echo site_url('users/usersController/searchUser');?>" method = "get">
         <input name = "keyword" type="text" class="form-control input-sm" maxlength="64" placeholder="Search email" />
         <button type="submit" class="btn2 btn-primary btn-sm">Search</button>
       </form>
