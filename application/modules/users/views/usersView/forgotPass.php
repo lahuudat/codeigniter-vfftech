@@ -18,7 +18,7 @@
     endif;
      ?>
   <h1>Reset password</h1>
- <?php echo form_open('usersController/doForgotPass'); ?>
+ <?php echo form_open('users/usersController/doForgotPass'); ?>
     <div class="form-group">
       <label for="email">Email:</label>
       <input type="email" name="email" placeholder="Enter email" class="form-control" id="email" >

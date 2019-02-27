@@ -628,7 +628,7 @@ class usersController extends MY_Controller {
 
 		if (isset($this->session->userdata['logged_in'])) {
 
-			redirect(site_url("usersController"));
+			redirect(site_url("users/usersController"));
 
 		} 
 		
@@ -653,7 +653,7 @@ class usersController extends MY_Controller {
 
 				$this->session->set_flashdata('msg','Change password successfully');
 
-				return redirect('usersController/login');
+				return redirect('users/usersController/login');
 
 			}else{
 

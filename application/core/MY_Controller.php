@@ -71,7 +71,7 @@ class MY_Controller extends CI_Controller {
 
 		$emailForgot = $this->input->post('email');
 
-		$this->load->model('userModel');
+		$this->load->model('users/userModel');
 
 		if($this->userModel->emailExists($emailForgot)){
 
@@ -98,11 +98,11 @@ class MY_Controller extends CI_Controller {
 	    		$mail->isHTML(true);                                  
 	    		$mail->Subject = 'Resset your password';
 
-	    		$mail->Body    = "<p>This email has been sent as a request to reset our password</p><p><a href='".base_url()."index.php/usersController/resetPassword/$temp_pass'>Click here </a>if you want to reset your password,if not, then ignore</p>";
+	    		$mail->Body    = "<p>This email has been sent as a request to reset our password</p><p><a href='".base_url()."users/usersController/resetPassword/$temp_pass'>Click here </a>if you want to reset your password,if not, then ignore</p>";
 
 	    		if($mail->send()){
 
-	    			 $this->load->model('userModel');
+	    			 $this->load->model('users/userModel');
 
 	    			 $data = array(
 	    			 	'email' =>$this->input->post('email'),
@@ -113,7 +113,7 @@ class MY_Controller extends CI_Controller {
 
                     	$this->session->set_flashdata('msg2','check your email for instructions, thank you');
 
-						return redirect('usersController/forgotPass');
+						return redirect('users/usersController/forgotPass');
 
                 	}
 
@@ -121,7 +121,7 @@ class MY_Controller extends CI_Controller {
 
 	    			$this->session->set_flashdata('msg','email was not sent, please contact your administrator');
 
-					return redirect('usersController/forgotPass');
+					return redirect('users/usersController/forgotPass');
 
 	    		}
 
@@ -135,7 +135,7 @@ class MY_Controller extends CI_Controller {
 
 			$this->session->set_flashdata('msg','email is not exist');
 
-			return redirect('usersController/forgotPass');
+			return redirect('users/usersController/forgotPass');
 
 		}
 

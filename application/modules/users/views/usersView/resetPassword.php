@@ -13,7 +13,7 @@
 
 
   <h1>Reset password</h1>
- <?php echo form_open("usersController/doResetPassword/{$password}"); ?>
+ <?php echo form_open("users/usersController/doResetPassword/{$password}"); ?>
   
     <div class="form-group">
       <label for="pwd">Password:</label>
