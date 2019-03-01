@@ -81,7 +81,7 @@ class userModel extends CI_Model
 
 			$this->session->set_flashdata('msg','not found');
 
-			return redirect('usersController/alert');
+			return redirect('users/usersController/alert');
 			
 		}
 

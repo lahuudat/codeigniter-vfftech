@@ -13,11 +13,11 @@
 				</div>
 				<div class="col-md-6">
 					<h4><?php echo $product->product_name; ?></h4>
-					<p>Author: <a href="#"><?php echo $product->author_name; ?></a></p>
-					<p>Category: <a href="#"><?php echo $product->category_name; ?></a></p>
+					<p>Author: <a href="<?php echo site_url("author/AuthorController/index/{$product->id_author}"); ?>"><?php echo $product->author_name; ?></a></p>
+					<p>Category: <a href="<?php echo site_url("product/productController/category/{$product->id_category}"); ?>"><?php echo $product->category_name; ?></a></p>
 					<p>Publishing: <?php echo $product->publishing; ?> </p>
 					<p>Publisher: <?php echo $product->publisher; ?> </p>
-					<p>price: <span><?php echo $product->price; ?></span></p>
+					<p>price: <span><?php echo $product->price; ?></span> $</p>
 				</div>
 			</div>
 			<div class="row">

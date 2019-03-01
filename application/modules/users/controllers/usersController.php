@@ -121,7 +121,7 @@ class usersController extends MY_Controller {
 
 			$this->session->set_flashdata('msg','not found');
 
-			return redirect('usersController/alert');
+			return redirect('users/usersController/alert');
 
 		}
 

@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
-
 class productController extends MY_Controller {
 
 	/**
@@ -93,19 +92,21 @@ class productController extends MY_Controller {
 	public function searchProduct()
 	{
 
-		$keyword = $this->input->post('keyword');
-
-		
+		$keyword = $this->input->get('keyword');
 
 		$this->load->model('product/productModel');
 
         $products = $this->productModel->search($keyword);
 
-        var_dump($products); exit();
+        $cate = $this->productModel->getCategory();
 
-        $data = array_merge($this->data, ['users'=>$users, 'keyword'=>$keyword]);
-		
-		$this->load->view('usersView/search',$data);
+		$this->load->view('product/header');
+
+		$this->load->view('product/sidebar',['cate'=>$cate]);
+
+		$this->load->view('product/searchProduct',['products'=>$products]);
+
+		$this->load->view('product/footer');
 
 	}
 

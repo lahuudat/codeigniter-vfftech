@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><strong>DIGI</strong> Shop</a>
+                <a class="navbar-brand" href="<?php echo site_url(); ?>"><strong>DIGI</strong> Shop</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -37,8 +37,8 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">Track Order</a></li>
-                    <li><a href="#">Login</a></li>
-                    <li><a href="#">Signup</a></li>
+                    <li><a href="<?php echo site_url('users/usersController/login');?>">Login</a></li>
+                    <li><a href="<?php echo site_url('users/usersController/create');?>">Signup</a></li>
 
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">24x7 Support <b class="caret"></b></a>
@@ -55,7 +55,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form method="post" action="<?php echo site_url('product/productController/searchProduct');?>" class="navbar-form navbar-right" role="search">
+                <form method="get" action="<?php echo site_url('product/productController/searchProduct');?>" class="navbar-form navbar-right" role="search">
                     <div class="form-group">
                         <input name = "keyword" type="text" placeholder="Enter Keyword Here ..." class="form-control">
                     </div>

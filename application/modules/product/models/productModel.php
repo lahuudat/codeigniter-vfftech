@@ -16,12 +16,10 @@ class productModel extends CI_Model
 
 		}else{
 
-			// $this->session->set_flashdata('msg','not found');
+			$this->session->set_flashdata('msg','not found');
 
-			// return redirect('usersController/alert');
-
-			die("loi nhe");
-
+			return redirect('product/productController');
+			
 		}
 
 	}
@@ -37,12 +35,10 @@ class productModel extends CI_Model
 
 		}else{
 
-			// $this->session->set_flashdata('msg','not found');
+			$this->session->set_flashdata('msg','not found');
 
-			// return redirect('usersController/alert');
-
-			die("loi nhe");
-
+			return redirect('product/productController');
+			
 		}
 
 	}
@@ -60,12 +56,10 @@ class productModel extends CI_Model
 
 		}else{
 
-			// $this->session->set_flashdata('msg','not found');
+			$this->session->set_flashdata('msg','not found');
 
-			// return redirect('usersController/alert');
-
-			die("loi nhe");
-
+			return redirect('product/productController');
+			
 		}
 
 	}
@@ -81,12 +75,10 @@ class productModel extends CI_Model
 
 		}else{
 
-			// $this->session->set_flashdata('msg','not found');
+			$this->session->set_flashdata('msg','not found');
 
-			// return redirect('usersController/alert');
-
-			die("loi nhe");
-
+			return redirect('product/productController');
+			
 		}
 	}
 
@@ -101,12 +93,10 @@ class productModel extends CI_Model
 
 		}else{
 
-			// $this->session->set_flashdata('msg','not found');
+			$this->session->set_flashdata('msg','not found');
 
-			// return redirect('usersController/alert');
-
-			die("loi nhe");
-
+			return redirect('product/productController/');
+			
 		}
 	}
 
@@ -117,15 +107,15 @@ class productModel extends CI_Model
 
 		$query = $this->db->query("SELECT product.name AS product_name, author.name AS author_name, product.*  FROM `product` INNER JOIN author ON product.id_author = author.id_author WHERE product.name LIKE '%$keyword%' ESCAPE '!' ORDER BY product.id_product DESC");
 
-		echo $this->db->last_query(); exit();
-
 		if ($query->num_rows() > 0) {
 
 			$result = $query->result();
 
 		}else{
 
-			die("error");
+			$this->session->set_flashdata('msg','not found');
+
+			return redirect('product/productController/');
 			
 		}
 

@@ -1,17 +1,9 @@
             
             <div class="col-md-9">
-                <?php if($msg = $this->session->flashdata('msg')):
-                ?>
-                    <div class="alert alert-success">
-                        <?php echo $msg; ?>
-                    </div>
-                <?php
-                endif;
-                ?>
                 <div>
                     <ol class="breadcrumb">
                         <li><a href="#">Home</a></li>
-                        <li class="active">News</li>
+                        <li class="active">Search</li>
                     </ol>
                 </div>
                 <!-- /.div -->
@@ -50,4 +42,8 @@
                     </ul>
                 </div>
                 <!-- /.row -->
+            </div>
+        </div>
+    </div>
+        
                 
